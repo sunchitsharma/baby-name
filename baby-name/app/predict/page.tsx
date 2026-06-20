@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Background from "@/components/Background";
 import NavBar from "@/components/NavBar";
 import { useVisitorName } from "@/lib/useVisitorName";
+import { supabase } from "@/lib/supabase";
 
 const QUESTIONS = [
   { emoji: "💼", q: "What will she be when she grows up?" },
@@ -29,7 +30,11 @@ export default function PredictPage() {
     e.preventDefault();
     if (!from.trim() || !answer.trim()) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1000));
+    await supabase.from("predictions").insert({
+      predicted_by: from.trim(),
+      question: QUESTIONS[selected].q,
+      answer: answer.trim(),
+    });
     setSubmitted({ q: QUESTIONS[selected].q, a: answer.trim() });
     setLoading(false);
     setStep("success");

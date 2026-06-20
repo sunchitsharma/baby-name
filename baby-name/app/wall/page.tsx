@@ -5,29 +5,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Background from "@/components/Background";
 import NavBar from "@/components/NavBar";
+import { supabase, type Suggestion } from "@/lib/supabase";
 
-interface Suggestion {
-  id: number;
-  suggestedBy: string;
-  name: string;
-  note: string;
-  timestamp: Date;
-}
-
-// Sample data kept for local testing/demos. The real wall starts empty
-// until visitors submit — swap SUGGESTIONS to SAMPLE_SUGGESTIONS to preview a full wall.
-const SAMPLE_SUGGESTIONS: Suggestion[] = [
-  { id: 1, suggestedBy: "Priya", name: "Aanya", note: "Means grace and inexhaustible — perfect for a strong girl", timestamp: new Date("2026-06-16T08:30:00") },
-  { id: 2, suggestedBy: "Rahul", name: "Zara", note: "Timeless, elegant, works everywhere in the world", timestamp: new Date("2026-06-16T10:15:00") },
-  { id: 3, suggestedBy: "Meera", name: "Avya", note: "Unique yet familiar — she'll stand out", timestamp: new Date("2026-06-17T14:00:00") },
-  { id: 4, suggestedBy: "Arjun", name: "Nia", note: "Short, bright, carries well in any language", timestamp: new Date("2026-06-18T09:00:00") },
-  { id: 5, suggestedBy: "Kavya", name: "Tara", note: "Star in Sanskrit. She already is one.", timestamp: new Date("2026-06-19T16:45:00") },
-];
-
-const SUGGESTIONS: Suggestion[] = [];
-void SAMPLE_SUGGESTIONS;
-
-const REVEAL = new Date("2026-06-22T16:00:00Z"); // 5 PM BST = 4 PM UTC
+const REVEAL = new Date("2026-06-21T16:00:00Z"); // 5 PM BST = 4 PM UTC
 
 function useCountdown(target: Date) {
   const [t, setT] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -58,7 +38,17 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
 
 export default function WallPage() {
   const reveal = useCountdown(REVEAL);
-  const formatDate = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("suggestions")
+      .select("*")
+      .order("created_at", { ascending: true })
+      .then(({ data }) => { if (data) setSuggestions(data); });
+  }, []);
+
+  const formatDate = (d: string) => new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 
   return (
     <div className="relative min-h-screen" style={{ background: "#020010" }}>
@@ -72,9 +62,9 @@ export default function WallPage() {
             <div className="inline-flex items-center gap-2 mb-2 sm:mb-4 px-4 py-1.5 rounded-full glass-card text-[11px] sm:text-xs tracking-widest uppercase"
               style={{ color: "rgba(191,0,255,0.8)", borderColor: "rgba(191,0,255,0.2)" }}>
               <span className="pulse-neon">◈</span>
-              {SUGGESTIONS.length === 0
+              {suggestions.length === 0
                 ? "A Blank Canvas"
-                : `${SUGGESTIONS.length} Name${SUGGESTIONS.length === 1 ? "" : "s"} Suggested`}
+                : `${suggestions.length} Name${suggestions.length === 1 ? "" : "s"} Suggested`}
               <span className="pulse-neon">◈</span>
             </div>
             <h1 className="font-display aurora-text text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-2 sm:mb-4"
@@ -88,7 +78,7 @@ export default function WallPage() {
               The Wall
             </h1>
             <p className="text-base md:text-lg" style={{ color: "rgba(226,232,240,0.4)" }}>
-              {SUGGESTIONS.length === 0
+              {suggestions.length === 0
                 ? "No names yet — her story is waiting for its first word."
                 : "Every name the universe has sent so far."}
             </p>
@@ -99,7 +89,7 @@ export default function WallPage() {
 
           {/* Suggestions — takes 2 cols */}
           <div className="md:col-span-2 flex flex-col gap-4">
-            {SUGGESTIONS.length === 0 && (
+            {suggestions.length === 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -123,7 +113,7 @@ export default function WallPage() {
               </motion.div>
             )}
 
-            {SUGGESTIONS.map((s, i) => (
+            {suggestions.map((s, i) => (
               <motion.div
                 key={s.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -140,11 +130,11 @@ export default function WallPage() {
                       WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
                     }}>{s.name}</span>
                     <span className="text-sm" style={{ color: "rgba(0,245,255,0.5)", fontFamily: "var(--font-geist-mono)" }}>
-                      by {s.suggestedBy}
+                      by {s.suggested_by}
                     </span>
                   </div>
                   <span className="text-xs shrink-0 mt-1" style={{ color: "rgba(226,232,240,0.2)", fontFamily: "var(--font-geist-mono)" }}>
-                    {formatDate(s.timestamp)}
+                    {formatDate(s.created_at)}
                   </span>
                 </div>
                 {s.note && (
@@ -156,8 +146,8 @@ export default function WallPage() {
             ))}
 
             {/* Suggest yours CTA */}
-            {SUGGESTIONS.length > 0 && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: SUGGESTIONS.length * 0.07 + 0.1 }}>
+            {suggestions.length > 0 && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: suggestions.length * 0.07 + 0.1 }}>
                 <Link href="/suggest"
                   className="flex items-center justify-center gap-2 neon-btn rounded-2xl px-6 py-4 text-sm w-full">
                   ⟡ Add your suggestion
@@ -177,7 +167,7 @@ export default function WallPage() {
               <p className="text-xs tracking-widest uppercase mb-1" style={{ color: "rgba(191,0,255,0.7)", fontFamily: "var(--font-geist-mono)" }}>
                 Name Revealed In
               </p>
-              <p className="text-sm mb-4" style={{ color: "rgba(226,232,240,0.4)" }}>Sunday 22 June · 5:00 PM</p>
+              <p className="text-sm mb-4" style={{ color: "rgba(226,232,240,0.4)" }}>Sunday 21 June · 5:00 PM</p>
               <div className="flex justify-center gap-3">
                 <TimeUnit value={reveal.days} label="Days" />
                 <TimeUnit value={reveal.hours} label="Hrs" />
@@ -194,9 +184,9 @@ export default function WallPage() {
               <div className="flex flex-col gap-0">
                 {[
                   { dot: "#00f5ff", label: "Suggestions open", sub: "Now", done: true },
-                  { dot: "#00f5ff", label: "Suggestions close", sub: "Sat 21 June · 5 PM BST", done: false },
-                  { dot: "#bf00ff", label: "Voting opens", sub: "Sun 22 June · Morning", done: false },
-                  { dot: "#ff9ec8", label: "Name revealed", sub: "Sun 22 June · 5 PM", done: false },
+                  { dot: "#00f5ff", label: "Suggestions close", sub: "Sat 20 June · 5 PM BST", done: false },
+                  { dot: "#bf00ff", label: "Voting opens", sub: "Sun 21 June · Morning", done: false },
+                  { dot: "#ff9ec8", label: "Name revealed", sub: "Sun 21 June · 5 PM", done: false },
                 ].map((item, i, arr) => (
                   <div key={item.label} className="flex gap-4">
                     <div className="flex flex-col items-center">
