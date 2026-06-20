@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+:root {
+  --background: #04020f;
+  --foreground: #e8ecf4;
+  --neon-cyan: #34f5ff;
+  --neon-purple: #c061ff;
+  --neon-pink: #ff5e9c;
+  --glass-bg: rgba(255, 255, 255, 0.035);
+  --glass-border: rgba(120, 200, 255, 0.14);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(192, 97, 255, 0.3);
+  color: #fff;
+}
+
+/* ───────────── Display type ───────────── */
+.font-display {
+  font-family: var(--font-display), var(--font-geist-sans), sans-serif;
+}
+
+/* Animated aurora gradient text — alive but gentle.
+   Clip properties are applied inline per-element (Tailwind v4's
+   minifier strips `background-clip: text` from stylesheet rules). */
+.aurora-text {
+  background-size: 220% 220%;
+  animation: auroraShift 9s ease-in-out infinite;
+}
+
+@keyframes auroraShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ───────────── Starfield ───────────── */
+.stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 10%, rgba(255,255,255,0.85) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 35%, rgba(255,255,255,0.65) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.75) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 15%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 33% 45%, rgba(255,255,255,0.65) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 55%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 5% 50%, rgba(52,245,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 40%, rgba(192,97,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 45% 75%, rgba(52,245,255,0.3) 0%, transparent 100%),
+    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(2px 2px at 75% 85%, rgba(255,255,255,0.4) 0%, transparent 100%);
+  animation: twinkle 6s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ───────────── Aurora drift ───────────── */
+.nebula {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 24s ease-in-out infinite;
+}
+.nebula:nth-of-type(odd) { animation-duration: 30s; animation-direction: reverse; }
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(4%, -3%) scale(1.08); }
+  66% { transform: translate(-3%, 4%) scale(0.96); }
+}
+
+/* ───────────── Vignette + grain (premium depth) ───────────── */
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(4,2,15,0.55) 100%);
+}
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainShift 0.6s steps(2) infinite;
+}
+
+@keyframes grainShift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-3%, 2%); }
+}
+
+/* ───────────── Glass ───────────── */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(22px) saturate(120%);
+  -webkit-backdrop-filter: blur(22px) saturate(120%);
+}
+
+/* ───────────── Neon text ───────────── */
+.neon-text {
+  color: var(--neon-cyan);
+  text-shadow:
+    0 0 12px rgba(52,245,255,0.5),
+    0 0 36px rgba(52,245,255,0.25);
+}
+
+.neon-text-purple {
+  color: var(--neon-purple);
+  text-shadow:
+    0 0 12px rgba(192,97,255,0.5),
+    0 0 36px rgba(192,97,255,0.25);
+}
+
+/* ───────────── Buttons ───────────── */
+.neon-btn {
+  position: relative;
+  background: rgba(52,245,255,0.04);
+  border: 1px solid rgba(52,245,255,0.45);
+  color: var(--neon-cyan);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 14px rgba(52,245,255,0.12), inset 0 0 14px rgba(52,245,255,0.04);
+}
+
+.neon-btn:hover {
+  background: rgba(52,245,255,0.12);
+  box-shadow: 0 0 26px rgba(52,245,255,0.4), inset 0 0 22px rgba(52,245,255,0.08);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.neon-btn:active {
+  transform: translateY(0);
+}
+
+.neon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ───────────── Inputs ───────────── */
+.neon-input {
+  background: rgba(120,200,255,0.04);
+  border: 1px solid rgba(120,200,255,0.18);
+  color: #e8ecf4;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.neon-input:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 18px rgba(52,245,255,0.18), inset 0 0 16px rgba(52,245,255,0.04);
+}
+
+.neon-input::placeholder {
+  color: rgba(232, 236, 244, 0.28);
+}
+
+/* ───────────── Motion helpers ───────────── */
+@keyframes pulse-neon {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.pulse-neon {
+  animation: pulse-neon 2.4s ease-in-out infinite;
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.float-soft {
+  animation: float-soft 5s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* ───────────── Scrollbar ───────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #04020f; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(rgba(52,245,255,0.4), rgba(192,97,255,0.4));
+  border-radius: 3px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-text, .nebula, .stars, .grain, .pulse-neon, .float-soft {
+    animation: none !important;
+  }
+}
