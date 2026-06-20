@@ -289,18 +289,19 @@ export default function SuggestPage() {
           className="flex justify-center mb-5 sm:mb-8 px-4">
           <button
             onClick={() => setShowAstrology(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs tracking-widest uppercase transition-all hover:opacity-80"
-            style={{
-              background: "rgba(191,0,255,0.08)",
-              border: "1px solid rgba(191,0,255,0.25)",
-              color: "rgba(191,0,255,0.8)",
-              fontFamily: "var(--font-geist-mono)",
-              boxShadow: "0 0 16px rgba(191,0,255,0.08)",
-            }}
+            className="glass-card rounded-2xl px-5 py-4 flex items-center gap-4 text-left transition-all hover:opacity-80 active:scale-95 w-full max-w-lg"
+            style={{ borderColor: "rgba(191,0,255,0.3)", boxShadow: "0 0 24px rgba(191,0,255,0.08)" }}
           >
-            <span>✦</span>
-            <span>Astrological guidance · नाम के अक्षर</span>
-            <span>✦</span>
+            <span className="text-2xl shrink-0">🔯</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold" style={{ color: "rgba(226,232,240,0.9)" }}>
+                See astrological guidance for her name
+              </p>
+              <p className="text-xs mt-0.5" style={{ color: "rgba(191,0,255,0.6)", fontFamily: "var(--font-geist-mono)" }}>
+                Nakshatra · Rashi · शुभ अक्षर — tap to open
+              </p>
+            </div>
+            <span className="text-lg shrink-0" style={{ color: "rgba(191,0,255,0.5)" }}>›</span>
           </button>
         </motion.div>
 
