@@ -8,7 +8,7 @@ import NavBar from "@/components/NavBar";
 import { useVisitorName } from "@/lib/useVisitorName";
 import { supabase } from "@/lib/supabase";
 
-const DEADLINE = new Date("2026-06-21T16:00:00Z"); // 5 PM BST = 4 PM UTC
+const DEADLINE = new Date("2026-06-20T16:00:00Z"); // 5 PM BST = 4 PM UTC
 const MAX_SUGGESTIONS = 3;
 
 const BLOCKED_MESSAGES = [
@@ -132,7 +132,7 @@ export default function SuggestPage() {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="flex flex-col items-center gap-3 sm:gap-4 mb-6 sm:mb-12 px-4">
           <p className="text-[11px] sm:text-xs tracking-widest uppercase text-center" style={{ color: "rgba(226,232,240,0.3)", fontFamily: "var(--font-geist-mono)" }}>
-            Suggestions close · Saturday 21 June · 5:00 PM BST
+            Suggestions close · Saturday 20 June · 5:00 PM BST
           </p>
           <div className="flex gap-2 sm:gap-4">
             <TimeUnit value={countdown.days} label="Days" />

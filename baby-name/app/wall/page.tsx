@@ -7,7 +7,7 @@ import Background from "@/components/Background";
 import NavBar from "@/components/NavBar";
 import { supabase, type Suggestion } from "@/lib/supabase";
 
-const REVEAL = new Date("2026-06-22T16:00:00Z"); // 5 PM BST = 4 PM UTC
+const REVEAL = new Date("2026-06-21T16:00:00Z"); // 5 PM BST = 4 PM UTC
 
 function useCountdown(target: Date) {
   const [t, setT] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -167,7 +167,7 @@ export default function WallPage() {
               <p className="text-xs tracking-widest uppercase mb-1" style={{ color: "rgba(191,0,255,0.7)", fontFamily: "var(--font-geist-mono)" }}>
                 Name Revealed In
               </p>
-              <p className="text-sm mb-4" style={{ color: "rgba(226,232,240,0.4)" }}>Sunday 22 June · 5:00 PM</p>
+              <p className="text-sm mb-4" style={{ color: "rgba(226,232,240,0.4)" }}>Sunday 21 June · 5:00 PM</p>
               <div className="flex justify-center gap-3">
                 <TimeUnit value={reveal.days} label="Days" />
                 <TimeUnit value={reveal.hours} label="Hrs" />
@@ -184,9 +184,9 @@ export default function WallPage() {
               <div className="flex flex-col gap-0">
                 {[
                   { dot: "#00f5ff", label: "Suggestions open", sub: "Now", done: true },
-                  { dot: "#00f5ff", label: "Suggestions close", sub: "Sat 21 June · 5 PM BST", done: false },
-                  { dot: "#bf00ff", label: "Voting opens", sub: "Sun 22 June · Morning", done: false },
-                  { dot: "#ff9ec8", label: "Name revealed", sub: "Sun 22 June · 5 PM", done: false },
+                  { dot: "#00f5ff", label: "Suggestions close", sub: "Sat 20 June · 5 PM BST", done: false },
+                  { dot: "#bf00ff", label: "Voting opens", sub: "Sun 21 June · Morning", done: false },
+                  { dot: "#ff9ec8", label: "Name revealed", sub: "Sun 21 June · 5 PM", done: false },
                 ].map((item, i, arr) => (
                   <div key={item.label} className="flex gap-4">
                     <div className="flex flex-col items-center">
