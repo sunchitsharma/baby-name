@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Background from "@/components/Background";
 import NavBar from "@/components/NavBar";
 import { useVisitorName } from "@/lib/useVisitorName";
+import { supabase } from "@/lib/supabase";
 
 const DEADLINE = new Date("2026-06-21T16:00:00Z"); // 5 PM BST = 4 PM UTC
 const MAX_SUGGESTIONS = 3;
@@ -74,8 +75,12 @@ export default function SuggestPage() {
     e.preventDefault();
     if (!yourName.trim() || !babyName.trim()) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
     const name = babyName.trim();
+    await supabase.from("suggestions").insert({
+      suggested_by: yourName.trim(),
+      name,
+      note: note.trim(),
+    });
     setLastSubmitted(name);
     setSubmitted((prev) => [...prev, name]);
     setLoading(false);
