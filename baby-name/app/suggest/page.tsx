@@ -60,6 +60,147 @@ const inputClass = "neon-input rounded-xl px-5 py-3.5 w-full text-sm";
 const labelClass = "text-xs tracking-widest uppercase";
 const labelStyle = { color: "rgba(226,232,240,0.35)", fontFamily: "var(--font-geist-mono)" };
 
+function AstrologyModal({ onClose }: { onClose: () => void }) {
+  return (
+    <AnimatePresence>
+      <motion.div
+        key="backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+        style={{ background: "rgba(2,0,16,0.85)", backdropFilter: "blur(8px)" }}
+        onClick={onClose}
+      >
+        <motion.div
+          key="sheet"
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 60 }}
+          transition={{ type: "spring", stiffness: 260, damping: 28 }}
+          className="glass-card w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl overflow-y-auto max-h-[92vh]"
+          style={{ borderColor: "rgba(191,0,255,0.25)", boxShadow: "0 0 60px rgba(191,0,255,0.12)" }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Handle bar (mobile) */}
+          <div className="flex justify-center pt-3 pb-1 sm:hidden">
+            <div className="w-10 h-1 rounded-full" style={{ background: "rgba(226,232,240,0.15)" }} />
+          </div>
+
+          <div className="px-6 pb-8 pt-4 sm:pt-6 flex flex-col gap-6">
+            {/* Header */}
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="text-xs tracking-widest uppercase mb-1" style={{ color: "rgba(191,0,255,0.6)", fontFamily: "var(--font-geist-mono)" }}>
+                  Vedic Astrology · वैदिक ज्योतिष
+                </div>
+                <h2 className="text-2xl font-bold" style={{
+                  background: "linear-gradient(120deg, #bf00ff, #ff9ec8)",
+                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                }}>
+                  What the stars say
+                </h2>
+                <p className="text-xs mt-0.5" style={{ color: "rgba(226,232,240,0.35)", fontFamily: "var(--font-geist-mono)" }}>
+                  तारे क्या कहते हैं
+                </p>
+              </div>
+              <button onClick={onClose}
+                className="shrink-0 mt-1 w-8 h-8 rounded-full flex items-center justify-center transition-opacity hover:opacity-60"
+                style={{ background: "rgba(226,232,240,0.06)", border: "1px solid rgba(226,232,240,0.1)", color: "rgba(226,232,240,0.4)" }}>
+                ✕
+              </button>
+            </div>
+
+            {/* Rashi */}
+            <div className="rounded-2xl p-4" style={{ background: "rgba(191,0,255,0.06)", border: "1px solid rgba(191,0,255,0.15)" }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">♊</span>
+                <div>
+                  <p className="font-semibold text-sm" style={{ color: "#bf00ff" }}>Mithun Rashi (Gemini)</p>
+                  <p className="text-xs" style={{ color: "rgba(191,0,255,0.55)", fontFamily: "var(--font-geist-mono)" }}>मिथुन राशि</p>
+                </div>
+              </div>
+              <p className="text-xs leading-relaxed mb-2" style={{ color: "rgba(226,232,240,0.6)" }}>
+                Rashi (Moon Sign) represents the zodiac sign occupied by the Moon at birth — used in Vedic astrology for personality, compatibility, and naming traditions.
+              </p>
+              <p className="text-xs leading-relaxed" style={{ color: "rgba(226,232,240,0.35)", fontStyle: "italic" }}>
+                राशि जन्म के समय चंद्रमा की स्थिति पर आधारित होती है। वैदिक ज्योतिष में इसका उपयोग व्यक्तित्व, अनुकूलता तथा नामकरण परंपराओं में किया जाता है।
+              </p>
+            </div>
+
+            {/* Nakshatra */}
+            <div className="rounded-2xl p-4" style={{ background: "rgba(52,245,255,0.05)", border: "1px solid rgba(52,245,255,0.12)" }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">✦</span>
+                <div>
+                  <p className="font-semibold text-sm" style={{ color: "#34f5ff" }}>Ardra Nakshatra</p>
+                  <p className="text-xs" style={{ color: "rgba(52,245,255,0.5)", fontFamily: "var(--font-geist-mono)" }}>आर्द्रा नक्षत्र</p>
+                </div>
+              </div>
+              <p className="text-xs leading-relaxed mb-2" style={{ color: "rgba(226,232,240,0.6)" }}>
+                A Nakshatra is a lunar constellation used in Vedic astrology. The birth Nakshatra determines auspicious naming syllables.
+              </p>
+              <p className="text-xs leading-relaxed" style={{ color: "rgba(226,232,240,0.35)", fontStyle: "italic" }}>
+                नक्षत्र वैदिक ज्योतिष में चंद्रमा की स्थिति पर आधारित एक तारामंडल है। जन्म नक्षत्र के आधार पर शुभ नाम-अक्षर निर्धारित किए जाते हैं।
+              </p>
+            </div>
+
+            {/* Recommended syllables */}
+            <div>
+              <p className="text-xs tracking-widest uppercase mb-0.5" style={{ color: "rgba(226,232,240,0.5)", fontFamily: "var(--font-geist-mono)" }}>
+                Recommended Starting Syllables
+              </p>
+              <p className="text-xs mb-3" style={{ color: "rgba(226,232,240,0.3)", fontFamily: "var(--font-geist-mono)" }}>अनुशंसित नाम प्रारंभ अक्षर</p>
+              <p className="text-xs mb-3 leading-relaxed" style={{ color: "rgba(226,232,240,0.5)" }}>
+                Names beginning with these syllables are most closely aligned with her birth Nakshatra and Pada.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[["Ku","कु"],["Ka","का"],["Ki","कि"],["Ke","के"],["Ko","को"],["Ha","ह"]].map(([en, hi]) => (
+                  <div key={en} className="flex flex-col items-center rounded-xl px-3 py-2 text-center"
+                    style={{ background: "rgba(191,0,255,0.1)", border: "1px solid rgba(191,0,255,0.3)" }}>
+                    <span className="text-sm font-bold" style={{ color: "#bf00ff" }}>{en}</span>
+                    <span className="text-xs mt-0.5" style={{ color: "rgba(191,0,255,0.5)" }}>{hi}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mitra Akshara */}
+            <div>
+              <p className="text-xs tracking-widest uppercase mb-0.5" style={{ color: "rgba(226,232,240,0.5)", fontFamily: "var(--font-geist-mono)" }}>
+                Mitra Akshara — Friendly Syllables
+              </p>
+              <p className="text-xs mb-3" style={{ color: "rgba(226,232,240,0.3)", fontFamily: "var(--font-geist-mono)" }}>मित्र अक्षर</p>
+              <p className="text-xs mb-3 leading-relaxed" style={{ color: "rgba(226,232,240,0.5)" }}>
+                Also auspicious — not the primary Nakshatra syllables, but harmonious and favorable.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[["I","ई"],["U","ऊ"],["E","ए"],["V","व"]].map(([en, hi]) => (
+                  <div key={en} className="flex flex-col items-center rounded-xl px-3 py-2 text-center"
+                    style={{ background: "rgba(52,245,255,0.07)", border: "1px solid rgba(52,245,255,0.2)" }}>
+                    <span className="text-sm font-bold" style={{ color: "#34f5ff" }}>{en}</span>
+                    <span className="text-xs mt-0.5" style={{ color: "rgba(52,245,255,0.45)" }}>{hi}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Guidance */}
+            <div className="rounded-2xl p-4" style={{ background: "rgba(226,232,240,0.03)", border: "1px solid rgba(226,232,240,0.07)" }}>
+              <p className="text-xs leading-relaxed mb-2" style={{ color: "rgba(226,232,240,0.55)" }}>
+                Parents may choose a name from either the recommended Nakshatra syllables or the Mitra Akshara syllables. The former follows the traditional naming system more closely, while the latter provides additional flexibility while remaining astrologically harmonious.
+              </p>
+              <p className="text-xs leading-relaxed" style={{ color: "rgba(226,232,240,0.3)", fontStyle: "italic" }}>
+                माता-पिता नाम का चयन मुख्य नक्षत्र-अक्षरों या मित्र अक्षरों में से किसी से भी कर सकते हैं। नक्षत्र-अक्षर पारंपरिक नामकरण पद्धति के अधिक निकट माने जाते हैं, जबकि मित्र अक्षर ज्योतिषीय अनुकूलता बनाए रखते हुए अधिक विकल्प प्रदान करते हैं।
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 export default function SuggestPage() {
   const { name: yourName, setName: setYourName } = useVisitorName();
   const [babyName, setBabyName] = useState("");
@@ -69,6 +210,7 @@ export default function SuggestPage() {
   const [lastSubmitted, setLastSubmitted] = useState("");
   const [step, setStep] = useState<"form" | "success" | "blocked">("form");
   const [blockedMsg] = useState(BLOCKED_MESSAGES[Math.floor(Math.random() * BLOCKED_MESSAGES.length)]);
+  const [showAstrology, setShowAstrology] = useState(false);
   const countdown = useCountdown(DEADLINE);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -140,6 +282,26 @@ export default function SuggestPage() {
             <TimeUnit value={countdown.minutes} label="Mins" />
             <TimeUnit value={countdown.seconds} label="Secs" />
           </div>
+        </motion.div>
+
+        {/* Astrology CTA */}
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
+          className="flex justify-center mb-5 sm:mb-8 px-4">
+          <button
+            onClick={() => setShowAstrology(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs tracking-widest uppercase transition-all hover:opacity-80"
+            style={{
+              background: "rgba(191,0,255,0.08)",
+              border: "1px solid rgba(191,0,255,0.25)",
+              color: "rgba(191,0,255,0.8)",
+              fontFamily: "var(--font-geist-mono)",
+              boxShadow: "0 0 16px rgba(191,0,255,0.08)",
+            }}
+          >
+            <span>✦</span>
+            <span>Astrological guidance · नाम के अक्षर</span>
+            <span>✦</span>
+          </button>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
@@ -276,6 +438,8 @@ export default function SuggestPage() {
           )}
         </motion.div>
       </div>
+
+      {showAstrology && <AstrologyModal onClose={() => setShowAstrology(false)} />}
     </div>
   );
 }
